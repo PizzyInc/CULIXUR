@@ -1,0 +1,30 @@
+version: 1
+backend:
+  phases:
+    preBuild:
+      commands:
+        - yum install -y php8.2 php8.2-cli php8.2-common php8.2-mbstring php8.2-xml php8.2-zip
+        - curl -sS https://getcomposer.org/installer | php
+        - mv composer.phar /usr/local/bin/composer
+    build:
+      commands:
+        - composer install --no-dev --optimize-autoloader
+        - npm install
+        - npm run build
+        - cd cdk && pip install -r requirements.txt && npx cdk deploy --require-approval never
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - cd frontend
+        - npm install
+    build:
+      commands:
+        - npm run build
+  artifacts:
+    baseDirectory: frontend/.next
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - frontend/node_modules/**/*

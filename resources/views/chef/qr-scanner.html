@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>QR Scanner - Culixur</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --brand-brown: #402A10;
+            --brand-ivory: #D9D6D1;
+            --brand-burgundy: #410A0F;
+            --brand-crimson: #8C3A40;
+            --brand-mauve: #A67885;
+        }
+        .brand-btn { background: var(--brand-burgundy); color: #fff; }
+        .brand-btn:hover { filter: brightness(1.1); }
+        
+        #qr-video {
+            width: 100%;
+            max-width: 640px;
+            height: auto;
+            border-radius: 0.5rem;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <nav class="bg-white shadow">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <div class="flex-shrink-0 flex items-center">
+                        <span class="text-2xl font-bold text-gray-900">Culixur</span>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="dashboard.html" class="text-gray-500 hover:text-gray-700">
+                        Dashboard
+                    </a>
+                    <a href="../landing.html" class="text-gray-500 hover:text-gray-700">
+                        Sign Out
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <div class="px-4 py-6 sm:px-0">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold text-gray-900">QR Code Scanner</h1>
+                <p class="mt-2 text-gray-600">Scan member QR codes to verify bookings</p>
+            </div>
+
+            <div class="max-w-3xl mx-auto">
+                <!-- Scanner Interface -->
+                <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+                    <div class="p-6">
+                        <!-- Video Preview -->
+                        <div class="bg-black rounded-lg mb-6">
+                            <video id="qr-video" class="mx-auto">
+                                Your browser does not support the video element.
+                            </video>
+                        </div>
+
+                        <!-- Camera Controls -->
+                        <div class="flex justify-center space-x-4 mb-6">
+                            <button class="brand-btn px-4 py-2 rounded-md text-sm" id="start-camera">
+                                Start Camera
+                            </button>
+                            <button class="px-4 py-2 border border-gray-300 rounded-md text-sm text-gray-700 bg-white hover:bg-gray-50" id="switch-camera">
+                                Switch Camera
+                            </button>
+                        </div>
+
+                        <!-- Scanning Status -->
+                        <div class="text-center">
+                            <p class="text-sm text-gray-500">Position the QR code within the frame</p>
+                        </div>
+                    </div>
+
+                    <!-- Results Section -->
+                    <div class="border-t border-gray-200 px-6 py-4">
+                        <div class="text-center" id="scan-result">
+                            <div class="flex items-center justify-center space-x-2">
+                                <svg class="animate-spin h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                <span class="text-sm text-gray-500">Waiting for QR code...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Scans -->
+                <div class="mt-8 bg-white shadow sm:rounded-lg">
+                    <div class="px-4 py-5 sm:p-6">
+                        <h2 class="text-lg font-medium text-gray-900 mb-4">Recent Scans</h2>
+                        <div class="space-y-4">
+                            <!-- Example of a successful scan -->
+                            <div class="flex items-center justify-between p-4 bg-green-50 rounded-lg">
+                                <div class="flex items-center">
+                                    <svg class="h-5 w-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <div>
+                                        <p class="text-sm font-medium text-green-800">Booking #12345 Verified</p>
+                                        <p class="text-xs text-green-700">2 minutes ago</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Note: In a real implementation, you would include the necessary JavaScript for QR scanning -->
+    <script>
+        // Placeholder for QR scanning functionality
+        document.getElementById('start-camera').addEventListener('click', () => {
+            // Camera start logic would go here
+            alert('Camera functionality would be implemented here');
+        });
+
+        document.getElementById('switch-camera').addEventListener('click', () => {
+            // Camera switch logic would go here
+            alert('Camera switch functionality would be implemented here');
+        });
+    </script>
+</body>
+</html>

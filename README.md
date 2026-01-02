@@ -249,16 +249,6 @@ npm run test:e2e
 # Frontend tests
 cd frontend
 npm run test
-```
-
-### Manual Testing Checklist
-- [ ] Member application submission
-- [ ] Admin approval flow
-- [ ] Member login and dashboard
-- [ ] Order creation
-- [ ] Chef order acceptance
-- [ ] QR code scanning
-- [ ] Referral submission
 
 ---
 
@@ -369,4 +359,5 @@ Proprietary - Culixur Platform © 2025
 ## 👥 Support
 
 For issues or questions, please contact the development team.
+
 

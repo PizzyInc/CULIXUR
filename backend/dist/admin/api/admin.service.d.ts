@@ -1,0 +1,244 @@
+import { ConfigService } from '@nestjs/config';
+import { PrismaService } from '../../backend/src/prisma/prisma.service';
+import { NotificationService } from '../../backend/src/notification/notification.service';
+export declare class AdminService {
+    private prisma;
+    private notificationService;
+    private configService;
+    private backendUrl;
+    private defaultPassword;
+    constructor(prisma: PrismaService, notificationService: NotificationService, configService: ConfigService);
+    getDashboard(): Promise<{
+        recentOrders: any[];
+        pending_applications: {
+            id: number;
+            status: import("@prisma/client").$Enums.ApplicationStatus;
+            createdAt: Date;
+            updatedAt: Date;
+            firstName: string;
+            lastName: string;
+            email: string;
+            phone: string;
+            location: string | null;
+            eliteQualifiers: string | null;
+            company: string | null;
+            membershipTier: import("@prisma/client").$Enums.MembershipTier;
+            referralCode: string | null;
+            message: string | null;
+            userId: number | null;
+        }[];
+        stats: {
+            live_orders: number;
+            active_chefs: number;
+            review_queue: number;
+            aov: number | import("node_modules/@prisma/client/runtime/library").Decimal;
+        };
+    }>;
+    getMenus(): Promise<{
+        image: string;
+        id: number;
+        serviceType: import("@prisma/client").$Enums.ServiceType;
+        createdAt: Date;
+        updatedAt: Date;
+        name: string;
+        description: string;
+        fixedPrice: import("node_modules/@prisma/client/runtime/library").Decimal;
+        details: string | null;
+    }[]>;
+    getUsers(): Promise<any[]>;
+    getBookings(): Promise<any[]>;
+    approveApplication(applicationId: number): Promise<{
+        success: boolean;
+        memberId: string;
+    }>;
+    rejectApplication(applicationId: number): Promise<{
+        id: number;
+        status: import("@prisma/client").$Enums.ApplicationStatus;
+        createdAt: Date;
+        updatedAt: Date;
+        firstName: string;
+        lastName: string;
+        email: string;
+        phone: string;
+        location: string | null;
+        eliteQualifiers: string | null;
+        company: string | null;
+        membershipTier: import("@prisma/client").$Enums.MembershipTier;
+        referralCode: string | null;
+        message: string | null;
+        userId: number | null;
+    }>;
+    createChef(data: {
+        name: string;
+        email: string;
+        password?: string;
+        specialty?: string;
+        phone_number?: string;
+        bio?: string;
+    }): Promise<{
+        id: number;
+        memberId: string | null;
+        createdAt: Date;
+        updatedAt: Date;
+        name: string | null;
+        email: string;
+        membershipTier: import("@prisma/client").$Enums.MembershipTier;
+        emailVerifiedAt: Date | null;
+        password: string;
+        image: string | null;
+        role: import("@prisma/client").$Enums.Role;
+        stripeCustomerId: string | null;
+    }>;
+    updateChefProfile(userId: number, data: any): Promise<{
+        id: number;
+        createdAt: Date;
+        updatedAt: Date;
+        userId: number;
+        image: string | null;
+        specialty: string;
+        phoneNumber: string;
+        bio: string | null;
+        categories: string[];
+        experienceYears: number | null;
+        isComplete: boolean;
+        isAvailable: boolean;
+        unavailableDates: Date[];
+    }>;
+    createMember(data: any): Promise<{
+        id: number;
+        memberId: string | null;
+        createdAt: Date;
+        updatedAt: Date;
+        name: string | null;
+        email: string;
+        membershipTier: import("@prisma/client").$Enums.MembershipTier;
+        emailVerifiedAt: Date | null;
+        password: string;
+        image: string | null;
+        role: import("@prisma/client").$Enums.Role;
+        stripeCustomerId: string | null;
+    }>;
+    updateUser(id: number, data: any): Promise<{
+        id: number;
+        memberId: string | null;
+        createdAt: Date;
+        updatedAt: Date;
+        name: string | null;
+        email: string;
+        membershipTier: import("@prisma/client").$Enums.MembershipTier;
+        emailVerifiedAt: Date | null;
+        password: string;
+        image: string | null;
+        role: import("@prisma/client").$Enums.Role;
+        stripeCustomerId: string | null;
+    }>;
+    deleteUser(id: number): Promise<{
+        id: number;
+        memberId: string | null;
+        createdAt: Date;
+        updatedAt: Date;
+        name: string | null;
+        email: string;
+        membershipTier: import("@prisma/client").$Enums.MembershipTier;
+        emailVerifiedAt: Date | null;
+        password: string;
+        image: string | null;
+        role: import("@prisma/client").$Enums.Role;
+        stripeCustomerId: string | null;
+    }>;
+    syncUsers(): Promise<{
+        message: string;
+        total: number;
+    }>;
+    createMenu(data: any): Promise<{
+        id: number;
+        serviceType: import("@prisma/client").$Enums.ServiceType;
+        createdAt: Date;
+        updatedAt: Date;
+        name: string;
+        image: string | null;
+        description: string;
+        fixedPrice: import("node_modules/@prisma/client/runtime/library").Decimal;
+        details: string | null;
+    }>;
+    updateMenu(id: number, data: any): Promise<{
+        id: number;
+        serviceType: import("@prisma/client").$Enums.ServiceType;
+        createdAt: Date;
+        updatedAt: Date;
+        name: string;
+        image: string | null;
+        description: string;
+        fixedPrice: import("node_modules/@prisma/client/runtime/library").Decimal;
+        details: string | null;
+    }>;
+    deleteMenu(id: number): Promise<{
+        success: boolean;
+        message: string;
+    }>;
+    getAllApplications(): Promise<{
+        id: number;
+        status: import("@prisma/client").$Enums.ApplicationStatus;
+        createdAt: Date;
+        updatedAt: Date;
+        firstName: string;
+        lastName: string;
+        email: string;
+        phone: string;
+        location: string | null;
+        eliteQualifiers: string | null;
+        company: string | null;
+        membershipTier: import("@prisma/client").$Enums.MembershipTier;
+        referralCode: string | null;
+        message: string | null;
+        userId: number | null;
+    }[]>;
+    reassignChef(orderId: number, newChefId: number): Promise<{
+        chef: {
+            id: number;
+            memberId: string | null;
+            createdAt: Date;
+            updatedAt: Date;
+            name: string | null;
+            email: string;
+            membershipTier: import("@prisma/client").$Enums.MembershipTier;
+            emailVerifiedAt: Date | null;
+            password: string;
+            image: string | null;
+            role: import("@prisma/client").$Enums.Role;
+            stripeCustomerId: string | null;
+        };
+        member: {
+            id: number;
+            memberId: string | null;
+            createdAt: Date;
+            updatedAt: Date;
+            name: string | null;
+            email: string;
+            membershipTier: import("@prisma/client").$Enums.MembershipTier;
+            emailVerifiedAt: Date | null;
+            password: string;
+            image: string | null;
+            role: import("@prisma/client").$Enums.Role;
+            stripeCustomerId: string | null;
+        };
+    } & {
+        id: number;
+        orderId: string | null;
+        serviceType: import("@prisma/client").$Enums.ServiceType;
+        menu: string;
+        price: import("node_modules/@prisma/client/runtime/library").Decimal;
+        datetime: Date;
+        address: string;
+        guestCount: number;
+        allergies: string | null;
+        paymentIntentId: string | null;
+        paymentStatus: string;
+        status: import("@prisma/client").$Enums.OrderStatus;
+        memberId: number;
+        chefId: number | null;
+        selectedChefs: import("node_modules/@prisma/client/runtime/library").JsonValue | null;
+        createdAt: Date;
+        updatedAt: Date;
+    }>;
+}

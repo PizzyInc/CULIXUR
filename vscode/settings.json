@@ -1,0 +1,20 @@
+{
+    "dbcode.connections": [
+        {
+            "connectionId": "-mx2uovv_VXUYxytrWmWX",
+            "name": "Localhost",
+            "driver": "postgres",
+            "connectionType": "host",
+            "host": "127.0.0.1",
+            "port": 5500,
+            "ssl": false,
+            "authMethod": "password",
+            "username": "postgres",
+            "password": "",
+            "savePassword": "secretStorage",
+            "readOnly": false,
+            "postConnectionSqlType": "inline",
+            "connectionTimeout": 30
+        }
+    ]
+}

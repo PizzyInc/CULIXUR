@@ -1,0 +1,23 @@
+# Server Configuration
+PORT=3001
+NODE_ENV=development
+BACKEND_URL="http://127.0.0.1:3001"
+DEFAULT_USER_PASSWORD="welcome123"
+
+# Database Configuration
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/culixur?schema=public"
+
+# JWT Configuration
+JWT_SECRET="c6b8f7e2a9d4c3b5a1f0e9d8c7b6a5a4b3c2d1e0f9g8h7i6j5k4l3m2n1o0p9q8"
+
+# Frontend Origins (CORS)
+# Support: culixur.com, chef.culixur.com, admin.culixur.com
+FRONTEND_URLS="http://localhost:3000,http://localhost:3001,http://localhost:3002,http://localhost:3003,http://localhost:3004,http://localhost:3005,https://culixur.com,https://chef.culixur.com,https://admin.culixur.com"
+
+# Stripe Configuration
+STRIPE_SECRET_KEY="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"
+STRIPE_WEBHOOK_SECRET="whsec_placeholder"
+
+# Admin Configuration
+ADMIN_EMAIL="admin@culixur.com"
+ADMIN_PASSWORD="admin123"

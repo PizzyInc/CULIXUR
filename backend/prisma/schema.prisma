@@ -1,0 +1,213 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                    Int                    @id @default(autoincrement())
+  name                  String?
+  email                 String                 @unique
+  emailVerifiedAt       DateTime?              @map("email_verified_at")
+  password              String
+  image                 String?
+  role                  Role                   @default(MEMBER)
+  memberId              String?                @unique @map("member_id")
+  membershipTier        MembershipTier         @default(CULIXUR) @map("membership_tier")
+  createdAt             DateTime               @default(now()) @map("created_at")
+  updatedAt             DateTime               @updatedAt @map("updated_at")
+  stripeCustomerId      String?                @unique @map("stripe_customer_id")
+  chefAvailability      ChefAvailability[]
+  chefProfile           ChefProfile?
+  membershipApplication MembershipApplication?
+  ordersAsChef          Order[]                @relation("ChefOrders")
+  ordersAsMember        Order[]                @relation("MemberOrders")
+  referrals             Referral[]
+
+  @@map("users")
+}
+
+model ChefProfile {
+  id               Int        @id @default(autoincrement())
+  userId           Int        @unique @map("user_id")
+  specialty        String
+  phoneNumber      String     @map("phone_number")
+  bio              String?
+  categories       String[] @default([])
+  experienceYears  Int?       @map("experience_years")
+  image            String?
+  createdAt        DateTime   @default(now()) @map("created_at")
+  updatedAt        DateTime   @updatedAt @map("updated_at")
+  isComplete       Boolean    @default(false) @map("is_complete")
+  isAvailable      Boolean    @default(true) @map("is_available")
+  unavailableDates DateTime[] @map("unavailable_dates")
+  user             User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("chef_profiles")
+}
+
+model Menu {
+  id          Int         @id @default(autoincrement())
+  name        String
+  description String
+  serviceType ServiceType @map("service_type")
+  fixedPrice  Decimal     @map("fixed_price") @db.Decimal(10, 2)
+  image       String?
+  details     String?
+  createdAt   DateTime    @default(now()) @map("created_at")
+  updatedAt   DateTime    @updatedAt @map("updated_at")
+
+  @@map("menus")
+}
+
+model Order {
+  id            Int         @id @default(autoincrement())
+  orderId       String?     @unique @map("order_id")
+  serviceType   ServiceType @map("service_type")
+  menu          String
+  price         Decimal     @db.Decimal(10, 2)
+  datetime      DateTime
+  address       String
+  guestCount    Int         @map("guest_count")
+  allergies     String?
+  paymentIntentId String?   @map("payment_intent_id")
+  paymentStatus String      @default("PENDING") @map("payment_status")
+  status        OrderStatus @default(PENDING)
+  memberId      Int         @map("member_id")
+  chefId        Int?        @map("chef_id")
+  selectedChefs Json?       @map("selected_chefs")
+  createdAt     DateTime    @default(now()) @map("created_at")
+  updatedAt     DateTime    @updatedAt @map("updated_at")
+  chef          User?       @relation("ChefOrders", fields: [chefId], references: [id])
+  member        User        @relation("MemberOrders", fields: [memberId], references: [id], onDelete: Cascade)
+
+  @@map("orders")
+}
+
+model ChefAvailability {
+  id        Int                @id @default(autoincrement())
+  chefId    Int                @map("chef_id")
+  date      DateTime           @db.Date
+  startTime DateTime           @map("start_time") @db.Time(6)
+  endTime   DateTime           @map("end_time") @db.Time(6)
+  status    AvailabilityStatus @default(AVAILABLE)
+  createdAt DateTime           @default(now()) @map("created_at")
+  updatedAt DateTime           @updatedAt @map("updated_at")
+  chef      User               @relation(fields: [chefId], references: [id], onDelete: Cascade)
+
+  @@unique([chefId, date, startTime])
+  @@map("chef_availability")
+}
+
+model MembershipApplication {
+  id              Int               @id @default(autoincrement())
+  firstName       String            @map("first_name")
+  lastName        String            @map("last_name")
+  email           String            @unique
+  phone           String
+  location        String?
+  eliteQualifiers String?           @map("elite_qualifiers")
+  company         String?
+  membershipTier  MembershipTier    @map("membership_tier")
+  referralCode    String?           @map("referral_code")
+  message         String?
+  status          ApplicationStatus @default(PENDING)
+  userId          Int?              @unique @map("user_id")
+  createdAt       DateTime          @default(now()) @map("created_at")
+  updatedAt       DateTime          @updatedAt @map("updated_at")
+  user            User?             @relation(fields: [userId], references: [id])
+
+  @@map("membership_applications")
+}
+
+model Referral {
+  id                 Int            @id @default(autoincrement())
+  referrerId         Int            @map("referrer_id")
+  referredName       String         @map("referred_name")
+  referredEmail      String         @map("referred_email")
+  referredPhone      String         @map("referred_phone")
+  referredOccupation String         @map("referred_occupation")
+  isElite            Boolean        @default(false) @map("is_elite")
+  status             ReferralStatus @default(PENDING)
+  notes              String?
+  createdAt          DateTime       @default(now()) @map("created_at")
+  updatedAt          DateTime       @updatedAt @map("updated_at")
+  referrer           User           @relation(fields: [referrerId], references: [id], onDelete: Cascade)
+
+  @@map("referrals")
+}
+
+model Event {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  eventAt     DateTime @map("event_at")
+  location    String?
+  imagePath   String?  @map("image_path")
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("events")
+}
+
+model Notification {
+  id             String    @id @default(uuid())
+  type           String
+  notifiableType String    @map("notifiable_type")
+  notifiableId   Int       @map("notifiable_id")
+  data           String
+  readAt         DateTime? @map("read_at")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+
+  @@map("notifications")
+}
+
+enum Role {
+  ADMIN
+  CHEF
+  MEMBER
+}
+
+enum ServiceType {
+  ATELIER
+  BOARDROOM
+  GATHERING
+  RENDEZVOUS
+}
+
+enum OrderStatus {
+  PENDING
+  ASSIGNED
+  ACCEPTED
+  EN_ROUTE
+  COMPLETED
+  CANCELLED
+}
+
+enum AvailabilityStatus {
+  AVAILABLE
+  BOOKED
+  UNAVAILABLE
+}
+
+enum ApplicationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum MembershipTier {
+  CULIXUR
+  ELITE
+}
+
+enum ReferralStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
